@@ -1,0 +1,28 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin: -10px;
+}
+
+.item {
+  text-align: center;
+  position: relative;
+  background-color: aqua;
+
+  width: calc((100% - 120px) / 6);
+  margin: 10px;
+}
+
+.wrapper {
+  padding: 5px;
+  text-align: center;
+}
+
+.image {
+  height: 275px;
+}
+
+.name {
+  margin-bottom: 5px;
+}

@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  margin-bottom: 18px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgb(128, 125, 125);
+}
+
+.infoWrapper {
+  margin-left: 30px;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.text {
+  composes: title;
+  font-size: 17px;
+}
+
+.genresList {
+  display: flex;
+}
+
+.genresItem {
+  font-size: 17px;
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+}
