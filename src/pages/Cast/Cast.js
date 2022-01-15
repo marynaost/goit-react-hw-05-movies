@@ -14,8 +14,6 @@ export default function Cast({ movie }) {
 
   return (
     <>
-      {/* <h2>{movie.title} </h2> */}
-
       {cast && (
         <ul className={s.list}>
           {cast.map(elem => (

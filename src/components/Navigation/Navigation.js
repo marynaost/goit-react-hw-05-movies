@@ -8,7 +8,7 @@ export default function Navigation() {
         Home
       </NavLink>
       <NavLink to="/movies" className={s.link} activeClassName={s.activeLink}>
-        MoviesPage
+        Movies
       </NavLink>
     </nav>
   );

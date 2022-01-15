@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { NavLink, Route, useRouteMatch } from 'react-router-dom';
+import {
+  useParams,
+  useHistory,
+  useLocation,
+  NavLink,
+  Route,
+  useRouteMatch,
+} from 'react-router-dom';
 import * as API from '../../services/api';
-import Cast from 'components/Cast/Cast';
+import Cast from 'pages/Cast/Cast';
+import Reviews from 'pages/Reviews/Reviews';
+import noPoster from '../../images/noPoster.png';
 import s from './MoviesPageDetail.module.scss';
 
 export default function MoviesPageDetail() {
+  const history = useHistory();
+  const location = useLocation();
   const { url, path } = useRouteMatch();
   const { moviesId } = useParams();
   const [movie, setMovie] = useState(null);
@@ -14,15 +24,28 @@ export default function MoviesPageDetail() {
     API.fetchMoviesDetail(moviesId).then(setMovie);
   }, [moviesId]);
 
+  const onGoBack = () => {
+    history.push(
+      location?.state?.from?.pathname
+        ? `${location?.state?.from?.pathname}${location.state?.from?.search}`
+        : '/',
+    );
+  };
+
   return (
     <>
-      <h2>MoviesPageDetail</h2>
-
+      <button type="button" onClick={onGoBack}>
+        {location?.state?.from?.label ?? 'Go back'}
+      </button>
       {movie && (
         <div>
           <div className={s.wrapper}>
             <img
-              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+              src={
+                movie.poster_path
+                  ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+                  : noPoster
+              }
               alt={movie.title}
             />
             <div className={s.infoWrapper}>
@@ -42,9 +65,7 @@ export default function MoviesPageDetail() {
               </ul>
             </div>
           </div>
-
           <p className={s.text}>Additional information</p>
-
           <ul>
             <li>
               <NavLink to={`${url}/cast`}>Cast</NavLink>
@@ -55,9 +76,11 @@ export default function MoviesPageDetail() {
           </ul>
         </div>
       )}
-      <hr />
 
       <Route path={`${path}/cast`}>{movie && <Cast movie={movie} />}</Route>
+      <Route path={`${path}/reviews`}>
+        {movie && <Reviews movie={movie} />}
+      </Route>
     </>
   );
 }
