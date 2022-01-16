@@ -1,12 +1,11 @@
 import * as API from '../../services/api';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import s from './Cast.module.scss';
 import noPoster from '../../images/noPoster.png';
 
-export default function Cast({ movie }) {
+export default function Cast({ moviesId }) {
   const [cast, setCast] = useState(null);
-  const { moviesId } = useParams();
 
   useEffect(() => {
     API.fetchMoviesCredits(moviesId).then(response => setCast(response.cast));
@@ -38,3 +37,7 @@ export default function Cast({ movie }) {
     </>
   );
 }
+
+Cast.propTypes = {
+  movieId: PropTypes.string,
+};

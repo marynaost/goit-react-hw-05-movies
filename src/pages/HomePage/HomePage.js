@@ -14,12 +14,13 @@ export default function HomePage() {
 
   return (
     <>
-      <h2>Tranding today</h2>
+      <h2 className={s.mainTitle}>Tranding today</h2>
       {movies && (
         <ul className={s.list}>
           {movies.map(({ id, poster_path, title }) => (
             <li key={id} className={s.card}>
               <Link
+                style={{ textDecoration: 'none', color: '#000' }}
                 to={{
                   pathname: `/movies/${id}`,
                   state: {

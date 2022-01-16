@@ -1,10 +1,9 @@
 import * as API from '../../services/api';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export default function Reviews({ movie }) {
+export default function Reviews({ moviesId }) {
   const [reviews, setReviews] = useState(null);
-  const { moviesId } = useParams();
 
   useEffect(() => {
     API.fetchMoviesReviews(moviesId).then(response => setReviews(response));
@@ -30,3 +29,7 @@ export default function Reviews({ movie }) {
     </div>
   );
 }
+
+Reviews.propTypes = {
+  movieId: PropTypes.string,
+};

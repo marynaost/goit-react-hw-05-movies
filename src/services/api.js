@@ -12,7 +12,7 @@ export function fetchPopularMovies() {
   return fetchMovies(`${BASE_URL}/trending/movie/day?api_key=${API_KEY}`);
 }
 
-export function fetchSearchMovies(query, page = 1) {
+export function fetchSearchMovies(query, page) {
   return fetchMovies(
     `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&language=en-US&page=${page}&include_adult=false`,
   );

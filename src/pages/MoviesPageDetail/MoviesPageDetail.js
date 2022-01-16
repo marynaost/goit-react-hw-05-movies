@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import {
   useParams,
   useHistory,
@@ -7,11 +7,19 @@ import {
   Route,
   useRouteMatch,
 } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
 import * as API from '../../services/api';
-import Cast from 'pages/Cast/Cast';
-import Reviews from 'pages/Reviews/Reviews';
+// import Cast from 'components/Cast/Cast';
+// import Reviews from 'components/Reviews/Reviews';
 import noPoster from '../../images/noPoster.png';
 import s from './MoviesPageDetail.module.scss';
+
+const Cast = lazy(() =>
+  import('components/Cast/Cast' /* webpackChunkName: "cast" */),
+);
+const Reviews = lazy(() =>
+  import('components/Reviews/Reviews' /* webpackChunkName: "reviews" */),
+);
 
 export default function MoviesPageDetail() {
   const history = useHistory();
@@ -26,11 +34,13 @@ export default function MoviesPageDetail() {
 
   const onGoBack = () => {
     history.push(
-      location?.state?.from?.pathname
-        ? `${location?.state?.from?.pathname}${location.state?.from?.search}`
+      location?.state?.from?.location?.pathname
+        ? `${location?.state?.from?.location?.pathname}${location.state?.from?.location?.search}`
         : '/',
     );
   };
+
+  // console.log(location.state.from);
 
   return (
     <>
@@ -68,19 +78,51 @@ export default function MoviesPageDetail() {
           <p className={s.text}>Additional information</p>
           <ul>
             <li>
-              <NavLink to={`${url}/cast`}>Cast</NavLink>
+              <NavLink
+                style={{ textDecoration: 'none' }}
+                activeClassName={s.activeLink}
+                to={{
+                  pathname: `${url}/cast`,
+                  state: { from: location?.state?.from },
+                }}
+              >
+                Cast
+              </NavLink>
             </li>
             <li>
-              <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+              <NavLink
+                style={{ textDecoration: 'none' }}
+                activeClassName={s.activeLink}
+                to={{
+                  pathname: `${url}/reviews`,
+                  state: { from: location?.state?.from },
+                }}
+              >
+                Reviews
+              </NavLink>
             </li>
           </ul>
         </div>
       )}
-
-      <Route path={`${path}/cast`}>{movie && <Cast movie={movie} />}</Route>
-      <Route path={`${path}/reviews`}>
-        {movie && <Reviews movie={movie} />}
-      </Route>
+      <Suspense
+        fallback={
+          <Loader
+            style={{ textAlign: 'center' }}
+            type="ThreeDots"
+            color="#3f51b5"
+            height={80}
+            width={80}
+            timeout={3000}
+          />
+        }
+      >
+        <Route path={`${path}/cast`}>
+          {movie && <Cast moviesId={moviesId} />}
+        </Route>
+        <Route path={`${path}/reviews`}>
+          {movie && <Reviews moviesId={moviesId} />}
+        </Route>
+      </Suspense>
     </>
   );
 }
