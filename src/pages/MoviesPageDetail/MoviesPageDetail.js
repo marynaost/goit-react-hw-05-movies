@@ -9,16 +9,12 @@ import {
 } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import * as API from '../../services/api';
-// import Cast from 'components/Cast/Cast';
-// import Reviews from 'components/Reviews/Reviews';
 import noPoster from '../../images/noPoster.png';
 import s from './MoviesPageDetail.module.scss';
 
-const Cast = lazy(() =>
-  import('components/Cast/Cast' /* webpackChunkName: "cast" */),
-);
+const Cast = lazy(() => import('../Cast/Cast' /* webpackChunkName: "cast" */));
 const Reviews = lazy(() =>
-  import('components/Reviews/Reviews' /* webpackChunkName: "reviews" */),
+  import('../Reviews/Reviews' /* webpackChunkName: "reviews" */),
 );
 
 export default function MoviesPageDetail() {
@@ -39,8 +35,6 @@ export default function MoviesPageDetail() {
         : '/',
     );
   };
-
-  // console.log(location.state.from);
 
   return (
     <>
